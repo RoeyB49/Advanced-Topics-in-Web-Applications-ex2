@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app, server } from "../app";
+import { app } from "../app";
 import User from "../models/user.model";
 
 describe("User Endpoints", () => {
@@ -16,10 +16,6 @@ describe("User Endpoints", () => {
       });
     accessToken = res.body.accessToken;
     userId = res.body.user._id;
-  });
-
-  afterAll((done) => {
-    server.close(done);
   });
 
   describe("GET /user", () => {

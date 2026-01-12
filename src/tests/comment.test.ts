@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app, server } from "../app";
+import { app } from "../app";
 import Comment from "../models/comment.model";
 
 describe("Comment Endpoints", () => {
@@ -29,10 +29,6 @@ describe("Comment Endpoints", () => {
         content: "Post for comments",
       });
     postId = postRes.body._id;
-  });
-
-  afterAll((done) => {
-    server.close(done);
   });
 
   describe("POST /comment", () => {

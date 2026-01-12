@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app, server } from "../app";
+import { app } from "../app";
 import Post from "../models/post.model";
 
 describe("Post Endpoints", () => {
@@ -19,9 +19,6 @@ describe("Post Endpoints", () => {
     userId = res.body.user._id;
   });
 
-  afterAll((done) => {
-    server.close(done);
-  });
 
   describe("POST /post", () => {
     it("should create a new post", async () => {

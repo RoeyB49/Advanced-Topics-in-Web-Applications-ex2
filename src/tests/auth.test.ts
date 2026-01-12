@@ -1,12 +1,8 @@
 import request from "supertest";
-import { app, server } from "../app";
+import { app } from "../app";
 import User from "../models/user.model";
 
 describe("Auth Endpoints", () => {
-  afterAll((done) => {
-    server.close(done);
-  });
-
   describe("POST /auth/register", () => {
     it("should register a new user", async () => {
       const res = await request(app)
