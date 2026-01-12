@@ -1,0 +1,81 @@
+###
+
+# GET http://localhost:3000
+
+###
+//Get all posts
+GET http://localhost:3000/post 
+###
+//Get post by id
+GET http://localhost:3000/post/6964b4d7c93d98a1cfeb10d2
+
+
+###
+//Get post by sender
+GET http://localhost:3000/post?sender=RoeyB
+###
+
+# POST http://localhost:3000/post
+
+
+###
+//Add a new post
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+    "sender":"RoeyB",
+    "title":"This is a test to see my first post",
+    "content":"This is my first post"
+}
+
+###
+//Update post by id
+PUT http://localhost:3000/post/6964b4d7c93d98a1cfeb10d2
+Content-Type: application/json
+
+{
+    "title": "Updated Title",
+    "content": "Updated content."
+}
+###
+
+###
+DELETE http://localhost:3000/post/6964b4d7c93d98a1cfeb10d2
+
+//Comments API
+###
+
+# Create a new comment
+POST http://localhost:3000/comment
+Content-Type: application/json
+
+{
+  "postId": "6964ae9738d509369b9bd631",
+  "sender": "JohnDoe",
+  "content": "This is a new comment."
+}
+
+# Get all comments for a specific post
+###
+GET  http://localhost:3000/comment?postId=6964ae9738d509369b9bd631
+
+###
+
+# Update a comment
+PUT http://localhost:3000/comment/6964b4f6c93d98a1cfeb10db
+Content-Type: application/json
+
+{
+  "sender": "RoeyB",
+  "content": "This is an updated comment."
+}
+###
+
+# Delete a comment
+DELETE http://localhost:3000/comment/6964b4f6c93d98a1cfeb10db
+###
+
+# Get a single comment
+GET http://localhost:3000/comment/6964b4f6c93d98a1cfeb10db
+###
