@@ -1,81 +1,162 @@
-###
+### Advanced Topics in Web Applications - API Testing
 
-# GET http://localhost:3000
+@baseUrl = http://localhost:3000
+@accessToken = 
+@refreshToken = 
+@userId = 
+@postId = 
+@commentId = 
 
-###
-//Get all posts
-GET http://localhost:3000/post 
-###
-//Get post by id
-GET http://localhost:3000/post/6964b4d7c93d98a1cfeb10d2
+###############################################
+# AUTHENTICATION ENDPOINTS
+###############################################
 
-
-###
-//Get post by sender
-GET http://localhost:3000/post?sender=RoeyB
-###
-
-# POST http://localhost:3000/post
-
-
-###
-//Add a new post
-POST http://localhost:3000/post
+### Register a new user
+POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-    "sender":"RoeyB",
-    "title":"This is a test to see my first post",
-    "content":"This is my first post"
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "password123"
 }
 
-###
-//Update post by id
-PUT http://localhost:3000/post/6964b4d7c93d98a1cfeb10d2
+### Login user
+POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-    "title": "Updated Title",
-    "content": "Updated content."
-}
-###
-
-###
-DELETE http://localhost:3000/post/6964b4d7c93d98a1cfeb10d2
-
-//Comments API
-###
-
-# Create a new comment
-POST http://localhost:3000/comment
-Content-Type: application/json
-
-{
-  "postId": "6964ae9738d509369b9bd631",
-  "sender": "JohnDoe",
-  "content": "This is a new comment."
+  "email": "john@example.com",
+  "password": "password123"
 }
 
-# Get all comments for a specific post
-###
-GET  http://localhost:3000/comment?postId=6964ae9738d509369b9bd631
-
-###
-
-# Update a comment
-PUT http://localhost:3000/comment/6964b4f6c93d98a1cfeb10db
+### Refresh access token
+POST {{baseUrl}}/auth/refresh
 Content-Type: application/json
 
 {
-  "sender": "RoeyB",
+  "refreshToken": "{{refreshToken}}"
+}
+
+### Logout user
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###############################################
+# USER ENDPOINTS
+###############################################
+
+### Get all users
+GET {{baseUrl}}/user
+
+### Get current user profile (requires authentication)
+GET {{baseUrl}}/user/profile
+Authorization: Bearer {{accessToken}}
+
+### Get user by ID
+GET {{baseUrl}}/user/{{userId}}
+
+### Update user (requires authentication)
+PUT {{baseUrl}}/user/{{userId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "username": "john_updated",
+  "email": "john_updated@example.com"
+}
+
+### Delete user (requires authentication)
+DELETE {{baseUrl}}/user/{{userId}}
+Authorization: Bearer {{accessToken}}
+
+###############################################
+# POST ENDPOINTS
+###############################################
+
+### Get all posts
+GET {{baseUrl}}/post
+
+### Get posts by sender
+GET {{baseUrl}}/post?sender={{userId}}
+
+### Get post by ID
+GET {{baseUrl}}/post/{{postId}}
+
+### Create a new post (requires authentication)
+POST {{baseUrl}}/post
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "My First Post",
+  "content": "This is the content of my first post. It's amazing!"
+}
+
+### Update a post (requires authentication)
+PUT {{baseUrl}}/post/{{postId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "Updated Post Title",
+  "content": "This is the updated content of my post."
+}
+
+### Delete a post (requires authentication)
+DELETE {{baseUrl}}/post/{{postId}}
+Authorization: Bearer {{accessToken}}
+
+###############################################
+# COMMENT ENDPOINTS
+###############################################
+
+### Get all comments
+GET {{baseUrl}}/comment
+
+### Get comments by post ID (query parameter)
+GET {{baseUrl}}/comment?postId={{postId}}
+
+### Get comments by post ID (path parameter)
+GET {{baseUrl}}/comment/posts/{{postId}}
+
+### Get comment by ID
+GET {{baseUrl}}/comment/{{commentId}}
+
+### Create a new comment (requires authentication)
+POST {{baseUrl}}/comment
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "postId": "{{postId}}",
+  "content": "This is a great post! Thanks for sharing."
+}
+
+### Update a comment (requires authentication)
+PUT {{baseUrl}}/comment/{{commentId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
   "content": "This is an updated comment."
 }
-###
 
-# Delete a comment
-DELETE http://localhost:3000/comment/6964b4f6c93d98a1cfeb10db
-###
+### Delete a comment (requires authentication)
+DELETE {{baseUrl}}/comment/{{commentId}}
+Authorization: Bearer {{accessToken}}
 
-# Get a single comment
-GET http://localhost:3000/comment/6964b4f6c93d98a1cfeb10db
-###
+###############################################
+# HEALTH CHECK
+###############################################
+
+### Check API status
+GET {{baseUrl}}/
+
+### View Swagger Documentation
+# Open in browser: http://localhost:3000/api-docs
+
