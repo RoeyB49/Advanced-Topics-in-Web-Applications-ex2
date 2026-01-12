@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
+import User, { IUser } from "../models/user.model";
 import { AuthRequest } from "../middleware/auth.middleware";
 
 /**
@@ -39,7 +39,7 @@ export const updateUser = async (req: AuthRequest, res: Response): Promise<void>
     const { username, email } = req.body;
 
     // Check if user is updating their own profile
-    if (req.user?._id.toString() !== userId) {
+    if (req.user && (req.user as IUser)._id.toString() !== userId) {
       res.status(403).json({ message: "You can only update your own profile" });
       return;
     }
@@ -69,7 +69,7 @@ export const deleteUser = async (req: AuthRequest, res: Response): Promise<void>
     const userId = req.params.id;
 
     // Check if user is deleting their own profile
-    if (req.user?._id.toString() !== userId) {
+    if (req.user && (req.user as IUser)._id.toString() !== userId) {
       res.status(403).json({ message: "You can only delete your own profile" });
       return;
     }

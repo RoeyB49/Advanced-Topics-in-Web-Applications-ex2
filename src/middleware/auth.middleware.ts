@@ -6,6 +6,8 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "your-access-toke
 
 export interface AuthRequest extends Request {
   user?: IUser;
+  body: any;
+  params: any;
 }
 
 export const authMiddleware = async (

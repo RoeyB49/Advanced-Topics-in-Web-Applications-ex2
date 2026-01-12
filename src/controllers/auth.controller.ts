@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
+import User, { IUser } from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -47,7 +47,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       username,
       email,
       password: hashedPassword,
-    });
+    }) as IUser;
 
     // Generate tokens
     const { accessToken, refreshToken } = generateTokens(user._id.toString());
@@ -99,7 +99,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Generate tokens
-    const { accessToken, refreshToken } = generateTokens(user._id.toString());
+    const { accessToken, refreshToken } = generateTokens((user as IUser)._id.toString());
 
     // Save refresh token
     user.refreshTokens.push(refreshToken);
@@ -174,7 +174,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
     }
 
     // Generate new tokens
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user._id.toString());
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens((user as IUser)._id.toString());
 
     // Replace old refresh token with new one
     user.refreshTokens = user.refreshTokens.filter((token) => token !== refreshToken);
