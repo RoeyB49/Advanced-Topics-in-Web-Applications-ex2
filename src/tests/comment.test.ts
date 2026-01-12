@@ -233,4 +233,28 @@ describe("Comment Endpoints", () => {
       expect(res.status).toBe(404);
     });
   });
+
+  describe("Error handling", () => {
+    it("should handle invalid comment ID format", async () => {
+      const res = await request(app).get("/comment/invalidid");
+
+      expect(res.status).toBe(500);
+    });
+
+    it("should return 404 for non-existent comment in update", async () => {
+      const res = await request(app)
+        .put("/comment/507f1f77bcf86cd799439011")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send({ content: "Updated" });
+
+      expect(res.status).toBe(404);
+    });
+
+    it("should return 404 for non-existent post when getting comments", async () => {
+      const res = await request(app).get("/comment/posts/507f1f77bcf86cd799439011");
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual([]);
+    });
+  });
 });

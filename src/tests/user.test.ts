@@ -137,5 +137,30 @@ describe("User Endpoints", () => {
 
       expect(res.status).toBe(401);
     });
+
+    it("should return 403 when trying to delete non-existent user", async () => {
+      const res = await request(app)
+        .delete("/user/000000000000000000000000")
+        .set("Authorization", `Bearer ${accessToken}`);
+
+      expect(res.status).toBe(403);
+    });
+  });
+
+  describe("Error handling", () => {
+    it("should return 500 for invalid user ID format in getUserById", async () => {
+      const res = await request(app).get("/user/invalidid");
+
+      expect(res.status).toBe(500);
+    });
+
+    it("should return 403 for updating non-existent user", async () => {
+      const res = await request(app)
+        .put("/user/000000000000000000000000")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send({ username: "updated" });
+
+      expect(res.status).toBe(403);
+    });
   });
 });

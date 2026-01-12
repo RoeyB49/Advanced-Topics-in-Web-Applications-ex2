@@ -160,5 +160,35 @@ describe("Auth Endpoints", () => {
 
       expect(res.status).toBe(401);
     });
+
+    it("should not refresh without refresh token", async () => {
+      const res = await request(app)
+        .post("/auth/refresh")
+        .send({});
+
+      expect(res.status).toBe(400);
+    });
+  });
+
+  describe("Error cases", () => {
+    it("should handle duplicate username on registration", async () => {
+      await request(app)
+        .post("/auth/register")
+        .send({
+          username: "uniqueuser",
+          email: "unique1@example.com",
+          password: "password123",
+        });
+
+      const res = await request(app)
+        .post("/auth/register")
+        .send({
+          username: "uniqueuser",
+          email: "unique2@example.com",
+          password: "password123",
+        });
+
+      expect(res.status).toBe(409);
+    });
   });
 });

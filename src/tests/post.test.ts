@@ -204,4 +204,21 @@ describe("Post Endpoints", () => {
       expect(res.status).toBe(404);
     });
   });
+
+  describe("Error handling", () => {
+    it("should return 400 for invalid post ID format", async () => {
+      const res = await request(app).get("/post/invalidid");
+
+      expect(res.status).toBe(400);
+    });
+
+    it("should return 404 for non-existent post in update", async () => {
+      const res = await request(app)
+        .put("/post/507f1f77bcf86cd799439011")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send({ title: "Updated" });
+
+      expect(res.status).toBe(404);
+    });
+  });
 });
